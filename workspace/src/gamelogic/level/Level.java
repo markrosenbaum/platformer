@@ -235,7 +235,6 @@ public class Level {
         }
 
     } else {
-        // If can't go down, try left and right
         int maxCol = map.getTiles().length - 1;
 
         if (col + 1 <= maxCol) {
