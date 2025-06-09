@@ -349,6 +349,7 @@ public void draw(Graphics g) {
 	    }
 
 
+
 	// --------------------------Die-Listener
 	public void throwPlayerDieEvent() {
 		for (PlayerDieListener playerDieListener : dieListeners) {
