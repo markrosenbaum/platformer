@@ -9,7 +9,6 @@ import gameengine.hitbox.RectHitbox;
 import gamelogic.Main;
 import gamelogic.level.Level;
 import gamelogic.tiles.Tile;
-import gamelogic.tiles.Water;
 
 public class Player extends PhysicsObject{
 	public float walkSpeed = 400;
@@ -24,31 +23,25 @@ public class Player extends PhysicsObject{
 		this.hitbox = new RectHitbox(this, offset,offset, width -offset, height - offset);
 	}
 
-	//I made the player move faster in water
-@Override
-public void update(float tslf) {
-    super.update(tslf);
-    
-    movementVector.x = 0;
-
-    boolean inWater = collisionMatrix[BOT] instanceof Water;
-
-    float currentWalkSpeed = inWater ? walkSpeed * 1.5f : walkSpeed;
-
-    if(PlayerInput.isLeftKeyDown()) {
-        movementVector.x = -currentWalkSpeed;
-    }
-    if(PlayerInput.isRightKeyDown()) {
-        movementVector.x = +currentWalkSpeed;
-    }
-    if(PlayerInput.isJumpKeyDown() && !isJumping) {
-        movementVector.y = -jumpPower;
-        isJumping = true;
-    }
-    
-    isJumping = true;
-    if(collisionMatrix[BOT] != null) isJumping = false;
-}
+	@Override
+	public void update(float tslf) {
+		super.update(tslf);
+		
+		movementVector.x = 0;
+		if(PlayerInput.isLeftKeyDown()) {
+			movementVector.x = -walkSpeed;
+		}
+		if(PlayerInput.isRightKeyDown()) {
+			movementVector.x = +walkSpeed;
+		}
+		if(PlayerInput.isJumpKeyDown() && !isJumping) {
+			movementVector.y = -jumpPower;
+			isJumping = true;
+		}
+		
+		isJumping = true;
+		if(collisionMatrix[BOT] != null) isJumping = false;
+	}
 
 	@Override
 	public void draw(Graphics g) {
