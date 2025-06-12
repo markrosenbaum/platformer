@@ -148,49 +148,58 @@ public class Level {
 		throwPlayerWinEvent();
 	}
 
-	public void update(float tslf) {
-		if (active) {
-			// Update the player
-			player.update(tslf);
+    public void update(float tslf) {
+        if (active) {
+            // Update the player
+            player.update(tslf);
 
-			// Player death
-			if (map.getFullHeight() + 100 < player.getY())
-				onPlayerDeath();
-			if (player.getCollisionMatrix()[PhysicsObject.BOT] instanceof Spikes)
-				onPlayerDeath();
-			if (player.getCollisionMatrix()[PhysicsObject.TOP] instanceof Spikes)
-				onPlayerDeath();
-			if (player.getCollisionMatrix()[PhysicsObject.LEF] instanceof Spikes)
-				onPlayerDeath();
-			if (player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes)
-				onPlayerDeath();
+            
+            if (!player.isInvincible()) {  // Only check death conditions if not invincible
+                // Player death from falling
+                if (map.getFullHeight() + 100 < player.getY()) {
+                    onPlayerDeath();
+                }
+                
+                // Check spike collisions
+                if (player.getCollisionMatrix()[PhysicsObject.BOT] instanceof Spikes ||
+                    player.getCollisionMatrix()[PhysicsObject.TOP] instanceof Spikes ||
+                    player.getCollisionMatrix()[PhysicsObject.LEF] instanceof Spikes ||
+                    player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes) {
+                    onPlayerDeath();
+                }
 
-			for (int i = 0; i < flowers.size(); i++) {
-				if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
-					if(flowers.get(i).getType() == 1)
-						water(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 3);
-					else
-						addGas(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 20, new ArrayList<Gas>());
-					flowers.remove(i);
-					i--;
-				}
-			}
+                // Check enemy collisions
+                for (int i = 0; i < enemies.length; i++) {
+                    enemies[i].update(tslf);
+                    if (player.getHitbox().isIntersecting(enemies[i].getHitbox())) {
+                        onPlayerDeath();
+                    }
+                }
+            } else {
+                for (int i = 0; i < enemies.length; i++) {
+                    enemies[i].update(tslf);
+                }
+            }
 
-			// Update the enemies
-			for (int i = 0; i < enemies.length; i++) {
-				enemies[i].update(tslf);
-				if (player.getHitbox().isIntersecting(enemies[i].getHitbox())) {
-					onPlayerDeath();
-				}
-			}
+            // Flower collection logic
+            for (int i = 0; i < flowers.size(); i++) {
+                if (flowers.get(i).getHitbox().isIntersecting(player.getHitbox())) {
+                    if(flowers.get(i).getType() == 1)
+                        water(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 3);
+                    else
+                        addGas(flowers.get(i).getCol(), flowers.get(i).getRow(), map, 20, new ArrayList<Gas>());
+                    flowers.remove(i);
+                    i--;
+                }
+            }
 
-			// Update the map
-			map.update(tslf);
+            // Update the map
+            map.update(tslf);
 
-			// Update the camera
-			camera.update(tslf);
-		}
-	}
+            // Update the camera
+            camera.update(tslf);
+        }
+    }
 	
 	
 	//#############################################################################################################
