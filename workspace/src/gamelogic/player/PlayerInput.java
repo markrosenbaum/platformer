@@ -17,8 +17,9 @@ class PlayerInput {
 	 * 
 	 * @return true if the walk-up-key is down
 	 */
-	public static boolean isJumpKeyDown() {
-		return KeyboardInputManager.isKeyDown(KeyEvent.VK_SPACE) || KeyboardInputManager.isKeyDown(KeyEvent.VK_W);
+	//I got annoyed so I made the up key also jump
+	 public static boolean isJumpKeyDown() {
+		return KeyboardInputManager.isKeyDown(KeyEvent.VK_SPACE) || KeyboardInputManager.isKeyDown(KeyEvent.VK_W) || KeyboardInputManager.isKeyDown(KeyEvent.VK_UP);
 	}
 	/**
 	 * 
