@@ -8,7 +8,6 @@ import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
 import gamelogic.Main;
 import gamelogic.level.Level;
-import gamelogic.tiles.Gas;
 import gamelogic.tiles.Tile;
 import gamelogic.tiles.Water;
 
@@ -34,7 +33,7 @@ public void update(float tslf) {
 
     boolean inWater = collisionMatrix[BOT] instanceof Water;
 
-    float currentWalkSpeed = inWater ? walkSpeed * 3f : walkSpeed;
+    float currentWalkSpeed = inWater ? walkSpeed * 1.5f : walkSpeed;
 
     if(PlayerInput.isLeftKeyDown()) {
         movementVector.x = -currentWalkSpeed;
@@ -51,26 +50,21 @@ public void update(float tslf) {
     if(collisionMatrix[BOT] != null) isJumping = false;
 }
 
-		//I made the player hard to see when theyre in gas
 	@Override
 	public void draw(Graphics g) {
-    
-    boolean inGas = collisionMatrix[BOT] instanceof Gas;
-
-    g.setColor(inGas ? new Color(0, 0, 0, 50) : Color.YELLOW); 
-
-    MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
-
-    if(Main.DEBUGGING) {
-        for (int i = 0; i < closestMatrix.length; i++) {
-            Tile t = closestMatrix[i];
-            if(t != null) {
-                g.setColor(Color.RED);
-                g.drawRect((int)t.getX(), (int)t.getY(), t.getSize(), t.getSize());
-            }
-        }
-    }
-
-    hitbox.draw(g);
-}
+		g.setColor(Color.YELLOW);
+		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
+		
+		if(Main.DEBUGGING) {
+			for (int i = 0; i < closestMatrix.length; i++) {
+				Tile t = closestMatrix[i];
+				if(t != null) {
+					g.setColor(Color.RED);
+					g.drawRect((int)t.getX(), (int)t.getY(), t.getSize(), t.getSize());
+				}
+			}
+		}
+		
+		hitbox.draw(g);
+	}
 }
