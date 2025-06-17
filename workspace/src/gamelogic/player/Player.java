@@ -57,7 +57,7 @@ public class Player extends PhysicsObject {
         float currentSpeed = walkSpeed;
         
         if(isInContact(Water.class)) {
-            currentSpeed *= 1.75f;
+            currentSpeed *= 2f;
         }
         
         movementVector.x = 0;
